@@ -788,6 +788,22 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	Router->BindRoute(FHttpPath(TEXT("/api/set-state-blend-space")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("setStateBlendSpace")));
 
+	// Widget Blueprint tools
+	Router->BindRoute(FHttpPath(TEXT("/api/list-widget-tree")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("listWidgetTree")));
+	Router->BindRoute(FHttpPath(TEXT("/api/get-widget-properties")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("getWidgetProperties")));
+	Router->BindRoute(FHttpPath(TEXT("/api/add-widget")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("addWidget")));
+	Router->BindRoute(FHttpPath(TEXT("/api/remove-widget")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("removeWidget")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-widget-property")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setWidgetProperty")));
+	Router->BindRoute(FHttpPath(TEXT("/api/move-widget")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("moveWidget")));
+	Router->BindRoute(FHttpPath(TEXT("/api/create-widget-blueprint")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("createWidgetBlueprint")));
+
 	// Register TMap dispatch handlers
 	RegisterHandlers();
 
@@ -939,6 +955,11 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("addAnimNode"),
 		TEXT("addStateMachine"),
 		TEXT("setStateAnimation"),
+		TEXT("addWidget"),
+		TEXT("removeWidget"),
+		TEXT("setWidgetProperty"),
+		TEXT("moveWidget"),
+		TEXT("createWidgetBlueprint"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1047,6 +1068,15 @@ void FBlueprintMCPServer::RegisterHandlers()
 	HandlerMap.Add(TEXT("createBlendSpace"),        [this](const TMap<FString, FString>&, const FString& B) { return HandleCreateBlendSpace(B); });
 	HandlerMap.Add(TEXT("setBlendSpaceSamples"),    [this](const TMap<FString, FString>&, const FString& B) { return HandleSetBlendSpaceSamples(B); });
 	HandlerMap.Add(TEXT("setStateBlendSpace"),      [this](const TMap<FString, FString>&, const FString& B) { return HandleSetStateBlendSpace(B); });
+
+	// Widget Blueprint handlers
+	HandlerMap.Add(TEXT("listWidgetTree"),          [this](const TMap<FString, FString>&, const FString& B) { return HandleListWidgetTree(B); });
+	HandlerMap.Add(TEXT("getWidgetProperties"),     [this](const TMap<FString, FString>&, const FString& B) { return HandleGetWidgetProperties(B); });
+	HandlerMap.Add(TEXT("addWidget"),               [this](const TMap<FString, FString>&, const FString& B) { return HandleAddWidget(B); });
+	HandlerMap.Add(TEXT("removeWidget"),            [this](const TMap<FString, FString>&, const FString& B) { return HandleRemoveWidget(B); });
+	HandlerMap.Add(TEXT("setWidgetProperty"),       [this](const TMap<FString, FString>&, const FString& B) { return HandleSetWidgetProperty(B); });
+	HandlerMap.Add(TEXT("moveWidget"),              [this](const TMap<FString, FString>&, const FString& B) { return HandleMoveWidget(B); });
+	HandlerMap.Add(TEXT("createWidgetBlueprint"),   [this](const TMap<FString, FString>&, const FString& B) { return HandleCreateWidgetBlueprint(B); });
 }
 
 // ============================================================

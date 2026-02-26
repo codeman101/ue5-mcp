@@ -14,6 +14,7 @@ class UMaterial;
 class UMaterialInstanceConstant;
 class UMaterialFunction;
 class UMaterialExpression;
+class UWidgetBlueprint;
 
 // ----- Snapshot data structures -----
 
@@ -204,6 +205,15 @@ private:
 	FString HandleRemoveComponent(const FString& Body);
 	FString HandleListComponents(const FString& Body);
 
+	// ----- Widget Blueprint tools -----
+	FString HandleListWidgetTree(const FString& Body);
+	FString HandleGetWidgetProperties(const FString& Body);
+	FString HandleAddWidget(const FString& Body);
+	FString HandleRemoveWidget(const FString& Body);
+	FString HandleSetWidgetProperty(const FString& Body);
+	FString HandleMoveWidget(const FString& Body);
+	FString HandleCreateWidgetBlueprint(const FString& Body);
+
 	// ----- Property defaults -----
 	FString HandleSetBlueprintDefault(const FString& Body);
 
@@ -290,6 +300,9 @@ private:
 	FString MakeErrorJson(const FString& Message);
 	bool SaveBlueprintPackage(UBlueprint* BP);
 	static FString UrlDecode(const FString& EncodedString);
+
+	// ----- Widget helpers -----
+	UWidgetBlueprint* LoadWidgetBlueprintByName(const FString& NameOrPath, FString& OutError);
 
 	// ----- Material helpers -----
 	/** Ensure that Material->MaterialGraph exists (creates it on demand for commandlet mode). */
