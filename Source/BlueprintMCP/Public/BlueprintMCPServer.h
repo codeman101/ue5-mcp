@@ -78,6 +78,9 @@ public:
 	/** Whether the HTTP server is currently listening. */
 	bool IsRunning() const { return bRunning; }
 
+	/** Re-scan the Asset Registry and refresh cached asset lists. */
+	FString HandleRescan();
+
 	/** Port the server is listening on. */
 	int32 GetPort() const { return Port; }
 
@@ -117,9 +120,6 @@ private:
 	int32 Port = 9847;
 	bool bRunning = false;
 	bool bIsEditor = false;
-
-	// ----- Asset registry rescan -----
-	FString HandleRescan();
 
 	// ----- Request handlers (read-only) -----
 	FString HandleList(const TMap<FString, FString>& Params);
