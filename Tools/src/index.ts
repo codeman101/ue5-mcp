@@ -20,7 +20,7 @@ import { registerUserTypeTools } from "./tools/user-types.js";
 import { registerMaterialReadTools } from "./tools/material-read.js";
 import { registerMaterialMutationTools } from "./tools/material-mutation.js";
 import { registerAnimationTools } from "./tools/animation-mutation.js";
-import { registerActorStateTools } from "./tools/actor-state.js";
+import { registerLevelActorTools } from "./tools/level-actors.js";
 
 // Resource registrations
 import { registerBlueprintListResource } from "./resources/blueprint-list.js";
@@ -49,7 +49,7 @@ registerUserTypeTools(server);
 registerMaterialReadTools(server);
 registerMaterialMutationTools(server);
 registerAnimationTools(server);
-registerActorStateTools(server);
+registerLevelActorTools(server);
 
 // Register resources
 registerBlueprintListResource(server);
