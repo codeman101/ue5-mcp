@@ -260,6 +260,12 @@ private:
 	// ----- Console command execution -----
 	FString HandleExecCommand(const FString& Body);
 
+
+	// ----- Actor state tools -----
+	FString HandleSetActorMobility(const FString& Body);
+	FString HandleSetActorVisibility(const FString& Body);
+	FString HandleSetActorPhysics(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);
