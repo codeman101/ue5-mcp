@@ -260,6 +260,13 @@ private:
 	// ----- Console command execution -----
 	FString HandleExecCommand(const FString& Body);
 
+
+	// ----- Sublevel tools -----
+	FString HandleGetLevelInfo(const FString& Body);
+	FString HandleListSublevels(const FString& Body);
+	FString HandleLoadSublevel(const FString& Body);
+	FString HandleUnloadSublevel(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);

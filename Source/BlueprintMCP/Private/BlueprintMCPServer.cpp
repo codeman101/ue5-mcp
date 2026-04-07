@@ -793,6 +793,16 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	Router->BindRoute(FHttpPath(TEXT("/api/exec")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("exec")));
 
+	// Sublevel tools
+	Router->BindRoute(FHttpPath(TEXT("/api/get-level-info")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("getLevelInfo")));
+	Router->BindRoute(FHttpPath(TEXT("/api/list-sublevels")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("listSublevels")));
+	Router->BindRoute(FHttpPath(TEXT("/api/load-sublevel")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("loadSublevel")));
+	Router->BindRoute(FHttpPath(TEXT("/api/unload-sublevel")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("unloadSublevel")));
+
 	// Register TMap dispatch handlers
 	RegisterHandlers();
 
@@ -944,6 +954,8 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("addAnimNode"),
 		TEXT("addStateMachine"),
 		TEXT("setStateAnimation"),
+		TEXT("loadSublevel"),
+		TEXT("unloadSublevel"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1055,6 +1067,12 @@ void FBlueprintMCPServer::RegisterHandlers()
 
 	// Console command execution
 	HandlerMap.Add(TEXT("exec"),                    [this](const TMap<FString, FString>&, const FString& B) { return HandleExecCommand(B); });
+
+	// Sublevel handlers
+	HandlerMap.Add(TEXT("getLevelInfo"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetLevelInfo(B); });
+	HandlerMap.Add(TEXT("listSublevels"), [this](const TMap<FString, FString>&, const FString& B) { return HandleListSublevels(B); });
+	HandlerMap.Add(TEXT("loadSublevel"), [this](const TMap<FString, FString>&, const FString& B) { return HandleLoadSublevel(B); });
+	HandlerMap.Add(TEXT("unloadSublevel"), [this](const TMap<FString, FString>&, const FString& B) { return HandleUnloadSublevel(B); });
 }
 
 // ============================================================
