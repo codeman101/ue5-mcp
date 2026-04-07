@@ -793,6 +793,14 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	Router->BindRoute(FHttpPath(TEXT("/api/exec")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("exec")));
 
+	// PIE runtime tools
+	Router->BindRoute(FHttpPath(TEXT("/api/pie-get-player-transform")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("pieGetPlayerTransform")));
+	Router->BindRoute(FHttpPath(TEXT("/api/pie-teleport-player")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("pieTeleportPlayer")));
+	Router->BindRoute(FHttpPath(TEXT("/api/pie-query-actors")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("pieQueryActors")));
+
 	// Register TMap dispatch handlers
 	RegisterHandlers();
 
@@ -944,6 +952,7 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("addAnimNode"),
 		TEXT("addStateMachine"),
 		TEXT("setStateAnimation"),
+		TEXT("pieTeleportPlayer"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1055,6 +1064,11 @@ void FBlueprintMCPServer::RegisterHandlers()
 
 	// Console command execution
 	HandlerMap.Add(TEXT("exec"),                    [this](const TMap<FString, FString>&, const FString& B) { return HandleExecCommand(B); });
+
+	// PIE runtime handlers
+	HandlerMap.Add(TEXT("pieGetPlayerTransform"), [this](const TMap<FString, FString>&, const FString& B) { return HandlePIEGetPlayerTransform(B); });
+	HandlerMap.Add(TEXT("pieTeleportPlayer"), [this](const TMap<FString, FString>&, const FString& B) { return HandlePIETeleportPlayer(B); });
+	HandlerMap.Add(TEXT("pieQueryActors"), [this](const TMap<FString, FString>&, const FString& B) { return HandlePIEQueryActors(B); });
 }
 
 // ============================================================
