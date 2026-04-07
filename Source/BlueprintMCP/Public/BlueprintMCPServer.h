@@ -260,6 +260,13 @@ private:
 	// ----- Console command execution -----
 	FString HandleExecCommand(const FString& Body);
 
+	// ----- View mode tools -----
+	FString HandleSetViewMode(const FString& Body);
+	FString HandleSetShowFlags(const FString& Body);
+	FString HandleSetViewportType(const FString& Body);
+	FString HandleSetRealtimeRendering(const FString& Body);
+	FString HandleSetGameView(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);

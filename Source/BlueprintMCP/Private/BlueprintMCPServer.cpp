@@ -793,6 +793,18 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	Router->BindRoute(FHttpPath(TEXT("/api/exec")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("exec")));
 
+	// View mode tools
+	Router->BindRoute(FHttpPath(TEXT("/api/set-view-mode")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setViewMode")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-show-flags")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setShowFlags")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-viewport-type")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setViewportType")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-realtime-rendering")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setRealtimeRendering")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-game-view")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setGameView")));
+
 	// Register TMap dispatch handlers
 	RegisterHandlers();
 
@@ -944,6 +956,7 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("addAnimNode"),
 		TEXT("addStateMachine"),
 		TEXT("setStateAnimation"),
+		TEXT("setViewMode"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1055,6 +1068,13 @@ void FBlueprintMCPServer::RegisterHandlers()
 
 	// Console command execution
 	HandlerMap.Add(TEXT("exec"),                    [this](const TMap<FString, FString>&, const FString& B) { return HandleExecCommand(B); });
+
+	// View mode handlers
+	HandlerMap.Add(TEXT("setViewMode"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetViewMode(B); });
+	HandlerMap.Add(TEXT("setShowFlags"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetShowFlags(B); });
+	HandlerMap.Add(TEXT("setViewportType"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetViewportType(B); });
+	HandlerMap.Add(TEXT("setRealtimeRendering"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetRealtimeRendering(B); });
+	HandlerMap.Add(TEXT("setGameView"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetGameView(B); });
 }
 
 // ============================================================
