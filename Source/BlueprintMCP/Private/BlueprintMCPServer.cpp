@@ -793,6 +793,14 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	Router->BindRoute(FHttpPath(TEXT("/api/exec")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("exec")));
 
+	// Actor state tools
+	Router->BindRoute(FHttpPath(TEXT("/api/set-actor-mobility")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setActorMobility")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-actor-visibility")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setActorVisibility")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-actor-physics")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setActorPhysics")));
+
 	// Register TMap dispatch handlers
 	RegisterHandlers();
 
@@ -944,6 +952,9 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("addAnimNode"),
 		TEXT("addStateMachine"),
 		TEXT("setStateAnimation"),
+		TEXT("setActorMobility"),
+		TEXT("setActorVisibility"),
+		TEXT("setActorPhysics"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1055,6 +1066,11 @@ void FBlueprintMCPServer::RegisterHandlers()
 
 	// Console command execution
 	HandlerMap.Add(TEXT("exec"),                    [this](const TMap<FString, FString>&, const FString& B) { return HandleExecCommand(B); });
+
+	// Actor state handlers
+	HandlerMap.Add(TEXT("setActorMobility"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetActorMobility(B); });
+	HandlerMap.Add(TEXT("setActorVisibility"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetActorVisibility(B); });
+	HandlerMap.Add(TEXT("setActorPhysics"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetActorPhysics(B); });
 }
 
 // ============================================================
