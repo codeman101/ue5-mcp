@@ -793,6 +793,16 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	Router->BindRoute(FHttpPath(TEXT("/api/exec")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("exec")));
 
+	// Editor utility tools
+	Router->BindRoute(FHttpPath(TEXT("/api/focus-actor")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("focusActor")));
+	Router->BindRoute(FHttpPath(TEXT("/api/editor-notification")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("editorNotification")));
+	Router->BindRoute(FHttpPath(TEXT("/api/save-all")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("saveAll")));
+	Router->BindRoute(FHttpPath(TEXT("/api/get-dirty-packages")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("getDirtyPackages")));
+
 	// Register TMap dispatch handlers
 	RegisterHandlers();
 
@@ -944,6 +954,7 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("addAnimNode"),
 		TEXT("addStateMachine"),
 		TEXT("setStateAnimation"),
+		TEXT("saveAll"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1055,6 +1066,12 @@ void FBlueprintMCPServer::RegisterHandlers()
 
 	// Console command execution
 	HandlerMap.Add(TEXT("exec"),                    [this](const TMap<FString, FString>&, const FString& B) { return HandleExecCommand(B); });
+
+	// Editor utility handlers
+	HandlerMap.Add(TEXT("focusActor"), [this](const TMap<FString, FString>&, const FString& B) { return HandleFocusActor(B); });
+	HandlerMap.Add(TEXT("editorNotification"), [this](const TMap<FString, FString>&, const FString& B) { return HandleEditorNotification(B); });
+	HandlerMap.Add(TEXT("saveAll"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSaveAll(B); });
+	HandlerMap.Add(TEXT("getDirtyPackages"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetDirtyPackages(B); });
 }
 
 // ============================================================

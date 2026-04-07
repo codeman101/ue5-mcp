@@ -260,6 +260,13 @@ private:
 	// ----- Console command execution -----
 	FString HandleExecCommand(const FString& Body);
 
+
+	// ----- Editor utility tools -----
+	FString HandleFocusActor(const FString& Body);
+	FString HandleEditorNotification(const FString& Body);
+	FString HandleSaveAll(const FString& Body);
+	FString HandleGetDirtyPackages(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);
