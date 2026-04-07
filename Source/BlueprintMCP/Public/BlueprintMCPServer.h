@@ -260,6 +260,12 @@ private:
 	// ----- Console command execution -----
 	FString HandleExecCommand(const FString& Body);
 
+	// ----- Level actor tools -----
+	FString HandleAttachActor(const FString& Body);
+	FString HandleDetachActor(const FString& Body);
+	FString HandleDuplicateActor(const FString& Body);
+	FString HandleRenameActor(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);
@@ -295,7 +301,6 @@ private:
 	static FString UrlDecode(const FString& EncodedString);
 
 	// ----- Material helpers -----
-	/** Ensure that Material->MaterialGraph exists (creates it on demand for commandlet mode). */
 	void EnsureMaterialGraph(UMaterial* Material);
 	FAssetData* FindMaterialAsset(const FString& NameOrPath);
 	UMaterial* LoadMaterialByName(const FString& NameOrPath, FString& OutError);
@@ -315,7 +320,6 @@ private:
 	TMap<FString, FGraphSnapshot> MaterialSnapshots;
 	static const int32 MaxSnapshots = 50;
 
-	// Snapshot helpers
 	FString GenerateSnapshotId(const FString& BlueprintName);
 	FGraphSnapshotData CaptureGraphSnapshot(UEdGraph* Graph);
 	void PruneOldSnapshots();
