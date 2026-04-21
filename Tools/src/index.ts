@@ -21,6 +21,7 @@ import { registerMaterialMutationTools } from "./tools/material-mutation.js";
 import { registerAnimationTools } from "./tools/animation-mutation.js";
 import { registerLevelActorTools } from "./tools/level-actors.js";
 import { registerActorQueryTools } from "./tools/actor-query.js";
+import { registerSpatialTools } from "./tools/spatial.js";
 
 import { registerBlueprintListResource } from "./resources/blueprint-list.js";
 import { registerWorkflowRecipesResource } from "./resources/workflow-recipes.js";
@@ -46,6 +47,7 @@ registerMaterialMutationTools(server);
 registerAnimationTools(server);
 registerLevelActorTools(server);
 registerActorQueryTools(server);
+registerSpatialTools(server);
 
 registerBlueprintListResource(server);
 registerWorkflowRecipesResource(server);

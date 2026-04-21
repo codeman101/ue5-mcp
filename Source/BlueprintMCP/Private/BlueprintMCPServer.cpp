@@ -814,6 +814,9 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 		QueuedHandler(TEXT("getActorBounds")));
 	Router->BindRoute(FHttpPath(TEXT("/api/set-actor-tags")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("setActorTags")));
+	// Spatial tools
+	Router->BindRoute(FHttpPath(TEXT("/api/raycast")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("raycast")));
 
 	// Register TMap dispatch handlers
 	RegisterHandlers();
@@ -1095,6 +1098,8 @@ void FBlueprintMCPServer::RegisterHandlers()
 	HandlerMap.Add(TEXT("findActorsInRadius"), [this](const TMap<FString, FString>&, const FString& B) { return HandleFindActorsInRadius(B); });
 	HandlerMap.Add(TEXT("getActorBounds"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetActorBounds(B); });
 	HandlerMap.Add(TEXT("setActorTags"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetActorTags(B); });
+	// Spatial handlers
+	HandlerMap.Add(TEXT("raycast"), [this](const TMap<FString, FString>&, const FString& B) { return HandleRaycast(B); });
 }
 
 // ============================================================

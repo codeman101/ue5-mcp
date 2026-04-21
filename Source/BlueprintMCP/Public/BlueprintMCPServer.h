@@ -187,6 +187,9 @@ private:
 	FString HandleGetActorBounds(const FString& Body);
 	FString HandleSetActorTags(const FString& Body);
 
+	// ----- Spatial tools -----
+	FString HandleRaycast(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);
