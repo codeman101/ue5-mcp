@@ -228,6 +228,11 @@ private:
 	// ----- Screenshot tools -----
 	FString HandleTakeScreenshot(const FString& Body);
 	FString HandleTakeHighResScreenshot(const FString& Body);
+	// ----- PIE lifecycle tools -----
+	FString HandleStartPIE(const FString& Body);
+	FString HandleStopPIE(const FString& Body);
+	FString HandleIsPIERunning(const FString& Body);
+	FString HandlePIEPause(const FString& Body);
 
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
