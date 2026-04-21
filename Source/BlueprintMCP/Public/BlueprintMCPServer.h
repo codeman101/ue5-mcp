@@ -190,6 +190,10 @@ private:
 	// ----- Spatial tools -----
 	FString HandleRaycast(const FString& Body);
 
+	// ----- Camera tools -----
+	FString HandleGetViewportCamera(const FString& Body);
+	FString HandleSetViewportCamera(const FString& Body);
+
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);

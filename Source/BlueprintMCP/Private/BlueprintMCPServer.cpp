@@ -817,6 +817,11 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 	// Spatial tools
 	Router->BindRoute(FHttpPath(TEXT("/api/raycast")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("raycast")));
+	// Camera tools
+	Router->BindRoute(FHttpPath(TEXT("/api/get-viewport-camera")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("getViewportCamera")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-viewport-camera")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setViewportCamera")));
 
 	// Register TMap dispatch handlers
 	RegisterHandlers();
@@ -974,6 +979,7 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("duplicateActor"),
 		TEXT("renameActor"),
 		TEXT("setActorTags"),
+		TEXT("setViewportCamera"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1100,6 +1106,9 @@ void FBlueprintMCPServer::RegisterHandlers()
 	HandlerMap.Add(TEXT("setActorTags"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetActorTags(B); });
 	// Spatial handlers
 	HandlerMap.Add(TEXT("raycast"), [this](const TMap<FString, FString>&, const FString& B) { return HandleRaycast(B); });
+	// Camera handlers
+	HandlerMap.Add(TEXT("getViewportCamera"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetViewportCamera(B); });
+	HandlerMap.Add(TEXT("setViewportCamera"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetViewportCamera(B); });
 }
 
 // ============================================================
