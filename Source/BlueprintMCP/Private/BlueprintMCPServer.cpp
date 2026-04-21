@@ -872,6 +872,11 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 		QueuedHandler(TEXT("setCVar")));
 	Router->BindRoute(FHttpPath(TEXT("/api/list-cvars")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("listCVars")));
+	// Output log tools
+	Router->BindRoute(FHttpPath(TEXT("/api/get-output-log")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("getOutputLog")));
+	Router->BindRoute(FHttpPath(TEXT("/api/clear-output-log")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("clearOutputLog")));
 
 	// Register TMap dispatch handlers
 	RegisterHandlers();
@@ -1038,6 +1043,7 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("setEditorSelection"),
 		TEXT("clearSelection"),
 		TEXT("setCVar"),
+		TEXT("clearOutputLog"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1195,6 +1201,9 @@ void FBlueprintMCPServer::RegisterHandlers()
 	HandlerMap.Add(TEXT("getCVar"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetCVar(B); });
 	HandlerMap.Add(TEXT("setCVar"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetCVar(B); });
 	HandlerMap.Add(TEXT("listCVars"), [this](const TMap<FString, FString>&, const FString& B) { return HandleListCVars(B); });
+	// Output log handlers
+	HandlerMap.Add(TEXT("getOutputLog"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetOutputLog(B); });
+	HandlerMap.Add(TEXT("clearOutputLog"), [this](const TMap<FString, FString>&, const FString& B) { return HandleClearOutputLog(B); });
 }
 
 // ============================================================

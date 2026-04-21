@@ -222,6 +222,9 @@ private:
 	FString HandleGetCVar(const FString& Body);
 	FString HandleSetCVar(const FString& Body);
 	FString HandleListCVars(const FString& Body);
+	// ----- Output log tools -----
+	FString HandleGetOutputLog(const FString& Body);
+	FString HandleClearOutputLog(const FString& Body);
 
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
