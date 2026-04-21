@@ -180,6 +180,14 @@ private:
 	FString HandleDuplicateActor(const FString& Body);
 	FString HandleRenameActor(const FString& Body);
 
+	// ----- Actor query tools -----
+	FString HandleFindActorsByTag(const FString& Body);
+	FString HandleFindActorsByClass(const FString& Body);
+	FString HandleFindActorsInRadius(const FString& Body);
+	FString HandleGetActorBounds(const FString& Body);
+	FString HandleSetActorTags(const FString& Body);
+
+	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
 	FString HandleAddAnimState(const FString& Body);
 	FString HandleRemoveAnimState(const FString& Body);
