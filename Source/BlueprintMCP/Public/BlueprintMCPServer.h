@@ -236,6 +236,11 @@ private:
 	// ----- Content browser tools -----
 	FString HandleNavigateContentBrowser(const FString& Body);
 	FString HandleOpenAssetEditor(const FString& Body);
+	// ----- Undo/Redo tools -----
+	FString HandleUndo(const FString& Body);
+	FString HandleRedo(const FString& Body);
+	FString HandleBeginTransaction(const FString& Body);
+	FString HandleEndTransaction(const FString& Body);
 
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);

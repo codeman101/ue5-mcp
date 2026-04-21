@@ -896,6 +896,15 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 		QueuedHandler(TEXT("navigateContentBrowser")));
 	Router->BindRoute(FHttpPath(TEXT("/api/open-asset-editor")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("openAssetEditor")));
+	// Undo/Redo tools
+	Router->BindRoute(FHttpPath(TEXT("/api/undo")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("undo")));
+	Router->BindRoute(FHttpPath(TEXT("/api/redo")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("redo")));
+	Router->BindRoute(FHttpPath(TEXT("/api/begin-transaction")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("beginTransaction")));
+	Router->BindRoute(FHttpPath(TEXT("/api/end-transaction")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("endTransaction")));
 
 	// Register TMap dispatch handlers
 	RegisterHandlers();
@@ -1064,6 +1073,8 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("setCVar"),
 		TEXT("clearOutputLog"),
 		TEXT("startPIE"),
+		TEXT("undo"),
+		TEXT("redo"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1235,6 +1246,11 @@ void FBlueprintMCPServer::RegisterHandlers()
 	// Content browser handlers
 	HandlerMap.Add(TEXT("navigateContentBrowser"), [this](const TMap<FString, FString>&, const FString& B) { return HandleNavigateContentBrowser(B); });
 	HandlerMap.Add(TEXT("openAssetEditor"), [this](const TMap<FString, FString>&, const FString& B) { return HandleOpenAssetEditor(B); });
+	// Undo/Redo handlers
+	HandlerMap.Add(TEXT("undo"), [this](const TMap<FString, FString>&, const FString& B) { return HandleUndo(B); });
+	HandlerMap.Add(TEXT("redo"), [this](const TMap<FString, FString>&, const FString& B) { return HandleRedo(B); });
+	HandlerMap.Add(TEXT("beginTransaction"), [this](const TMap<FString, FString>&, const FString& B) { return HandleBeginTransaction(B); });
+	HandlerMap.Add(TEXT("endTransaction"), [this](const TMap<FString, FString>&, const FString& B) { return HandleEndTransaction(B); });
 }
 
 // ============================================================
