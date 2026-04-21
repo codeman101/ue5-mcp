@@ -858,6 +858,13 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 		QueuedHandler(TEXT("saveAll")));
 	Router->BindRoute(FHttpPath(TEXT("/api/get-dirty-packages")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("getDirtyPackages")));
+	// Selection tools
+	Router->BindRoute(FHttpPath(TEXT("/api/get-editor-selection")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("getEditorSelection")));
+	Router->BindRoute(FHttpPath(TEXT("/api/set-editor-selection")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("setEditorSelection")));
+	Router->BindRoute(FHttpPath(TEXT("/api/clear-selection")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("clearSelection")));
 
 	// Register TMap dispatch handlers
 	RegisterHandlers();
@@ -1021,6 +1028,8 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("loadSublevel"),
 		TEXT("unloadSublevel"),
 		TEXT("saveAll"),
+		TEXT("setEditorSelection"),
+		TEXT("clearSelection"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1170,6 +1179,10 @@ void FBlueprintMCPServer::RegisterHandlers()
 	HandlerMap.Add(TEXT("editorNotification"), [this](const TMap<FString, FString>&, const FString& B) { return HandleEditorNotification(B); });
 	HandlerMap.Add(TEXT("saveAll"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSaveAll(B); });
 	HandlerMap.Add(TEXT("getDirtyPackages"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetDirtyPackages(B); });
+	// Selection handlers
+	HandlerMap.Add(TEXT("getEditorSelection"), [this](const TMap<FString, FString>&, const FString& B) { return HandleGetEditorSelection(B); });
+	HandlerMap.Add(TEXT("setEditorSelection"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetEditorSelection(B); });
+	HandlerMap.Add(TEXT("clearSelection"), [this](const TMap<FString, FString>&, const FString& B) { return HandleClearSelection(B); });
 }
 
 // ============================================================

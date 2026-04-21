@@ -214,6 +214,10 @@ private:
 	FString HandleEditorNotification(const FString& Body);
 	FString HandleSaveAll(const FString& Body);
 	FString HandleGetDirtyPackages(const FString& Body);
+	// ----- Selection tools -----
+	FString HandleGetEditorSelection(const FString& Body);
+	FString HandleSetEditorSelection(const FString& Body);
+	FString HandleClearSelection(const FString& Body);
 
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);
