@@ -218,6 +218,10 @@ private:
 	FString HandleGetEditorSelection(const FString& Body);
 	FString HandleSetEditorSelection(const FString& Body);
 	FString HandleClearSelection(const FString& Body);
+	// ----- CVar tools -----
+	FString HandleGetCVar(const FString& Body);
+	FString HandleSetCVar(const FString& Body);
+	FString HandleListCVars(const FString& Body);
 
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);

@@ -28,6 +28,7 @@ import { registerPIERuntimeTools } from "./tools/pie-runtime.js";
 import { registerSublevelTools } from "./tools/sublevels.js";
 import { registerEditorUtilityTools } from "./tools/editor-utils.js";
 import { registerSelectionTools } from "./tools/selection.js";
+import { registerCVarTools } from "./tools/cvars.js";
 
 import { registerBlueprintListResource } from "./resources/blueprint-list.js";
 import { registerWorkflowRecipesResource } from "./resources/workflow-recipes.js";
@@ -60,6 +61,7 @@ registerPIERuntimeTools(server);
 registerSublevelTools(server);
 registerEditorUtilityTools(server);
 registerSelectionTools(server);
+registerCVarTools(server);
 
 registerBlueprintListResource(server);
 registerWorkflowRecipesResource(server);
