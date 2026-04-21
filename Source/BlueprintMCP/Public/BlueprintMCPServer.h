@@ -199,6 +199,10 @@ private:
 	FString HandleSetViewportType(const FString& Body);
 	FString HandleSetRealtimeRendering(const FString& Body);
 	FString HandleSetGameView(const FString& Body);
+	// ----- PIE runtime tools -----
+	FString HandlePIEGetPlayerTransform(const FString& Body);
+	FString HandlePIETeleportPlayer(const FString& Body);
+	FString HandlePIEQueryActors(const FString& Body);
 
 	// ----- Animation Blueprint handlers -----
 	FString HandleCreateAnimBlueprint(const FString& Body);

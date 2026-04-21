@@ -833,6 +833,13 @@ bool FBlueprintMCPServer::Start(int32 InPort, bool bEditorMode)
 		QueuedHandler(TEXT("setRealtimeRendering")));
 	Router->BindRoute(FHttpPath(TEXT("/api/set-game-view")), EHttpServerRequestVerbs::VERB_POST,
 		QueuedHandler(TEXT("setGameView")));
+	// PIE runtime tools
+	Router->BindRoute(FHttpPath(TEXT("/api/pie-get-player-transform")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("pieGetPlayerTransform")));
+	Router->BindRoute(FHttpPath(TEXT("/api/pie-teleport-player")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("pieTeleportPlayer")));
+	Router->BindRoute(FHttpPath(TEXT("/api/pie-query-actors")), EHttpServerRequestVerbs::VERB_POST,
+		QueuedHandler(TEXT("pieQueryActors")));
 
 	// Register TMap dispatch handlers
 	RegisterHandlers();
@@ -992,6 +999,7 @@ void FBlueprintMCPServer::RegisterHandlers()
 		TEXT("setActorTags"),
 		TEXT("setViewportCamera"),
 		TEXT("setViewMode"),
+		TEXT("pieTeleportPlayer"),
 	};
 
 	// GET handlers (use QueryParams, ignore Body)
@@ -1127,6 +1135,10 @@ void FBlueprintMCPServer::RegisterHandlers()
 	HandlerMap.Add(TEXT("setViewportType"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetViewportType(B); });
 	HandlerMap.Add(TEXT("setRealtimeRendering"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetRealtimeRendering(B); });
 	HandlerMap.Add(TEXT("setGameView"), [this](const TMap<FString, FString>&, const FString& B) { return HandleSetGameView(B); });
+	// PIE runtime handlers
+	HandlerMap.Add(TEXT("pieGetPlayerTransform"), [this](const TMap<FString, FString>&, const FString& B) { return HandlePIEGetPlayerTransform(B); });
+	HandlerMap.Add(TEXT("pieTeleportPlayer"), [this](const TMap<FString, FString>&, const FString& B) { return HandlePIETeleportPlayer(B); });
+	HandlerMap.Add(TEXT("pieQueryActors"), [this](const TMap<FString, FString>&, const FString& B) { return HandlePIEQueryActors(B); });
 }
 
 // ============================================================
