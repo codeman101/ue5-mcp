@@ -11,7 +11,7 @@
 #include "Serialization/JsonWriter.h"
 #include "Serialization/JsonSerializer.h"
 
-static AActor* FindActorByLabel(const FString& Label, FString& OutError)
+static AActor* FindActorByLabelInEditor(const FString& Label, FString& OutError)
 {
 	if (!GEditor)
 	{
@@ -56,9 +56,9 @@ FString FBlueprintMCPServer::HandleAttachActor(const FString& Body)
 	UE_LOG(LogTemp, Display, TEXT("BlueprintMCP: attach_actor(child='%s', parent='%s', socket='%s')"), *ChildLabel, *ParentLabel, *SocketName);
 	if (!bIsEditor) return MakeErrorJson(TEXT("attach_actor requires editor mode."));
 	FString Error;
-	AActor* Child = FindActorByLabel(ChildLabel, Error);
+	AActor* Child = FindActorByLabelInEditor(ChildLabel, Error);
 	if (!Child) return MakeErrorJson(Error);
-	AActor* Parent = FindActorByLabel(ParentLabel, Error);
+	AActor* Parent = FindActorByLabelInEditor(ParentLabel, Error);
 	if (!Parent) return MakeErrorJson(Error);
 	if (Child == Parent) return MakeErrorJson(TEXT("Cannot attach an actor to itself."));
 	EAttachmentRule AttachRule = EAttachmentRule::KeepWorld;
@@ -88,7 +88,7 @@ FString FBlueprintMCPServer::HandleDetachActor(const FString& Body)
 	UE_LOG(LogTemp, Display, TEXT("BlueprintMCP: detach_actor('%s')"), *ActorLabel);
 	if (!bIsEditor) return MakeErrorJson(TEXT("detach_actor requires editor mode."));
 	FString Error;
-	AActor* Actor = FindActorByLabel(ActorLabel, Error);
+	AActor* Actor = FindActorByLabelInEditor(ActorLabel, Error);
 	if (!Actor) return MakeErrorJson(Error);
 	AActor* PreviousParent = Actor->GetAttachParentActor();
 	if (!PreviousParent)
@@ -117,7 +117,7 @@ FString FBlueprintMCPServer::HandleDuplicateActor(const FString& Body)
 	UE_LOG(LogTemp, Display, TEXT("BlueprintMCP: duplicate_actor('%s')"), *ActorLabel);
 	if (!bIsEditor) return MakeErrorJson(TEXT("duplicate_actor requires editor mode."));
 	FString Error;
-	AActor* SourceActor = FindActorByLabel(ActorLabel, Error);
+	AActor* SourceActor = FindActorByLabelInEditor(ActorLabel, Error);
 	if (!SourceActor) return MakeErrorJson(Error);
 	UWorld* World = GEditor->GetEditorWorldContext().World();
 	if (!World) return MakeErrorJson(TEXT("No editor world available."));
@@ -173,7 +173,7 @@ FString FBlueprintMCPServer::HandleRenameActor(const FString& Body)
 	UE_LOG(LogTemp, Display, TEXT("BlueprintMCP: rename_actor('%s' -> '%s')"), *ActorLabel, *NewLabel);
 	if (!bIsEditor) return MakeErrorJson(TEXT("rename_actor requires editor mode."));
 	FString Error;
-	AActor* Actor = FindActorByLabel(ActorLabel, Error);
+	AActor* Actor = FindActorByLabelInEditor(ActorLabel, Error);
 	if (!Actor) return MakeErrorJson(Error);
 	FString OldLabel = Actor->GetActorLabel();
 	Actor->SetActorLabel(NewLabel);
